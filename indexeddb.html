@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>IndexedDB</title>
+        <meta charset="utf-8" />
+        <script src="js/modernizr-custom.js"></script>
+        <script type="text/javascript">
+            Modernizr.on('indexeddb', function(result) {
+                if (result) {
+                    // supported
+                    console.log("supporté");
+                    var request = indexedDB.open("librairie");
+
+                    request.onupgradeneeded = function(){
+                        // La BDD n'existe pas et a été créé
+                        var db = request.result;
+                        var store = db.createObjectStore("livres", {keyPath:"isbn"});
+                        store.put({
+                            titre: "Ma vie mon oeuvre",
+                            auteur : "Franky ribery",
+                            isbn :10
+                        });
+                        store.put({
+                            titre: "Ma vie mon oeuvre 2",
+                            auteur : "Franky ribery 2",
+                            isbn :20
+                        });
+                    }
+
+                    request.onsuccess = function() {
+                        // onSuccess
+                        var db = request.result;
+                        var transaction = db.transaction(["livres"]);
+                        var objectStore = transaction.objectStore("livres");
+                        var res = objectStore.get(20);
+
+                        res.onerror = function(event){
+                            console.log(event);
+                        }
+
+                        res.onsuccess = function(event) {
+                            console.log(event);
+                        }
+                    }
+                } else {
+                    // not-supported
+                    console.log("Non supporté");
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <p>Test</p>
+    </body>
+</html>

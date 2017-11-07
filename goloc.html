@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Geolocalisation</title>
+        <meta charset="utf-8" />
+        <script type="text/javascript">
+            function getLocation() {
+                navigator.geolocation.getCurrentPosition(showPosition, errorPosition);
+            } 
+
+            function errorPosition(error){
+                console.log(error);
+            }
+
+            function showPosition(position){
+                console.log(position);
+            }
+        </script>
+    </head>
+    <body onload="getLocation()">
+        <p id="geoloc"></p>
+    </body>
+</html>
